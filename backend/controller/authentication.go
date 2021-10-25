@@ -30,7 +30,7 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// ค้นหา user ด้วย email ที่ผู้ใช้กรอกเข้ามา
+	// ค้นหา recorder ด้วย email ที่ผู้ใช้กรอกเข้ามา
 	if err := entity.DB().Raw("SELECT * FROM recorders WHERE email = ?", payload.Email).Scan(&recorder).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -39,7 +39,7 @@ func Login(c *gin.Context) {
 	// ตรวจสอบรหัสผ่าน
 	err := bcrypt.CompareHashAndPassword([]byte(recorder.Password), []byte(payload.Password))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user credentials"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid recorder credentials"})
 		return
 	}
 

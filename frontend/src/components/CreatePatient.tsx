@@ -383,7 +383,6 @@ function CreatePatient() {
             to="/patients"
             variant="contained"
             color="primary"
-            
             startIcon={<ReplyIcon />}
           >
             BACK
