@@ -21,7 +21,7 @@ function Home() {
   return (
     <div>
       <Container className={classes.container} maxWidth="md">
-        <h1 style={{ textAlign: "center" }}>ระบบจัดการคนไข้นอก</h1>
+        <h1 style={{ textAlign: "center" }}>G13-ระบบจัดการคนไข้นอก</h1>
         <h4>Requirements</h4>
         <p>
           ระบบจัดการคนไข้นอก..................................
