@@ -65,7 +65,7 @@ function CreatePatient() {
     Underlying_diseaseInterface[]
   >([]);
   const [allergys, setAllergys] = useState<AllergyInterface[]>([]);
-  const [recorders, setRecorders] = useState<RecorderInterface[]>([]);
+  const [recorders, setRecorders] = useState<RecorderInterface>();
   const [patient, setPatient] = useState<Partial<PatientInterface>>({});
 
   const [success, setSuccess] = useState(false);
@@ -74,7 +74,7 @@ function CreatePatient() {
   const apiUrl = "http://localhost:8080";
   const requestOptions = {
     method: "GET",
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}`,"Content-Type": "application/json" },
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json" },
   };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -142,9 +142,11 @@ function CreatePatient() {
       });
   };
   const getRecorder = async () => {
-    fetch(`${apiUrl}/recorders`, requestOptions)
+    let rid = localStorage.getItem("rid");
+    fetch(`${apiUrl}/recorder/${rid}`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
+        patient.RecorderID = res.data.ID;
         if (res.data) {
           setRecorders(res.data);
         } else {
@@ -180,7 +182,7 @@ function CreatePatient() {
 
     const requestOptionsPost = {
       method: "POST",
-      headers: {Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
 
@@ -303,6 +305,7 @@ function CreatePatient() {
             <FormControl fullWidth variant="outlined">
               <p>ประวัติการแพ้ยา</p>
               <Select
+              
                 id="outlined-select-currency"
                 value={patient.AllergyID}
                 onChange={handleChange}
@@ -322,6 +325,7 @@ function CreatePatient() {
             <FormControl fullWidth variant="outlined">
               <p>โรคประจำตัว</p>
               <Select
+        
                 id="Underlying_diseaseID"
                 value={patient.Underlying_diseaseID}
                 onChange={handleChange}
@@ -347,18 +351,20 @@ function CreatePatient() {
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
               <Select
+                native
+                disabled
                 id="RecorderID"
                 value={patient.RecorderID}
                 onChange={handleChange}
+
                 inputProps={{
                   name: "RecorderID",
                 }}
               >
-                {recorders.map((item: RecorderInterface) => (
-                  <MenuItem key={item.ID} value={item.ID}>
-                    {item.FirstName + ' ' + item.LastName}
-                  </MenuItem>
-                ))}
+                <option value={recorders?.ID} key={recorders?.ID}>
+                  {recorders?.FirstName +" "+ recorders?.LastName}
+                </option>
+ 
               </Select>
             </FormControl>
           </Grid>

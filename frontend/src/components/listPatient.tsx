@@ -15,6 +15,7 @@ import TableRow from "@material-ui/core/TableRow";
 import { PatientInterface } from "../models/IPatient";
 import React from "react";
 import SignIn from "./signinRecroder";
+import moment from "moment";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,10 +23,14 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(2),
     },
     table: {
-      minWidth: 650,
+      minWidth: 800,
     },
     tableSpace: {
       marginTop: 20,
+    },
+    paper: {
+      padding: theme.spacing(2),
+      color: theme.palette.text.secondary,
     },
   })
 );
@@ -72,16 +77,16 @@ function ListPatient() {
 
   return (
     <div>
-      <Container className={classes.container} maxWidth="md">
+      <Container className={classes.container} maxWidth="lg">
         <Box display="flex">
           <Box flexGrow={1}>
             <Typography
               component="h2"
-              variant="h6"
+              variant="h4"
               color="primary"
               gutterBottom
             >
-              ข้อมูลผู้ป่วย
+              ระบบลงทะเบียนข้อมูลผู้ป่วย
             </Typography>
           </Box>
           <Box>
@@ -91,61 +96,75 @@ function ListPatient() {
               variant="contained"
               color="primary"
             >
-              สร้างข้อมูล
+              สร้างข้อมูลผู้ป่วยใหม่
             </Button>
           </Box>
         </Box>
-        <TableContainer component={Paper} className={classes.tableSpace}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center" width="20%">
-                  หมายเลขบัตรประชาชน
-                </TableCell>
-                <TableCell align="center" width="10%">
-                  ชื่อ
-                </TableCell>
-                <TableCell align="center" width="10%">
-                  นามสกุล
-                </TableCell>
-                <TableCell align="center" width="10%">
-                  อายุ
-                </TableCell>
-                <TableCell align="center" width="10%">
-                  เพศ
-                </TableCell>
-                <TableCell align="center" width="25%">
-                  โรคประจำตัว
-                </TableCell>
-                <TableCell align="center" width="25%">
-                  ประวัติการแพ้ยา
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
+        <p></p>
+        <Paper className={classes.paper}>
+          <Box display="flex">
+            <Box flexGrow={1}>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="primary"
+                gutterBottom
+              >
+                รายการผู้ป่วย
+              </Typography>
+            </Box>
+          </Box>
+          
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center" width="15%">
+                    หมายเลขประจำตัวประชาชน
+                  </TableCell>
+                  <TableCell align="center" width="15%">
+                    ชื่อ-นามสกุล
+                  </TableCell>
+                  <TableCell align="center" width="10%">
+                    วัน/เดือน/ปีเกิด
+                  </TableCell>
+                  <TableCell align="center" width="10%">
+                    อายุ
+                  </TableCell>
+                  <TableCell align="center" width="10%">
+                    เพศ
+                  </TableCell>
+                  <TableCell align="center" width="15%">
+                    โรคประจำตัว
+                  </TableCell>
+                  <TableCell align="center" width="15%">
+                    ประวัติการแพ้ยา
+                  </TableCell>
+                  <TableCell align="center" width="10%">
+                    เวชระเบียน
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
               {patients.map((patient: PatientInterface) => (
                 <TableRow key={patient.ID}>
                   <TableCell align="center">{patient.Id_card}</TableCell>
-                  <TableCell align="center">{patient.FirstName}</TableCell>
-                  <TableCell align="center">{patient.LastName}</TableCell>
+                  <TableCell align="center">{patient.FirstName+' '+patient.LastName}</TableCell>
+                  <TableCell align="center">{moment(patient.Birthdate).format('D/MM/YYYY')}</TableCell>
                   <TableCell align="center">{patient.Age}</TableCell>
-                  <TableCell align="center">
-                    {patient.Gender.Identity}
-                  </TableCell>
-                  <TableCell align="center">
-                    {patient.Underlying_disease.Information}
-                  </TableCell>
-                  <TableCell align="center">
-                    {patient.Allergy.Information}
-                  </TableCell>
+                  <TableCell align="center">{patient.Gender.Identity}</TableCell>
+                  <TableCell align="center">{patient.Underlying_disease.Information}</TableCell>
+                  <TableCell align="center">{patient.Allergy.Information}</TableCell>
+                  <TableCell align="center">{patient.Recorder.FirstName}</TableCell>
                 </TableRow>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableBody>
+            </Table>
+         
+        </Paper>
+
       </Container>
-    </div>
+
+    </div >
   );
 }
-
 export default ListPatient;

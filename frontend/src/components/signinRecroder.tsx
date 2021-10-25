@@ -55,7 +55,7 @@ function SignIn() {
         if (res.data) {
           setSuccess(true);
           localStorage.setItem("token", res.data.token);
-          localStorage.setItem("uid", res.data.id);
+          localStorage.setItem("rid", res.data.id);
           window.location.reload()
         } else {
           setError(true);
